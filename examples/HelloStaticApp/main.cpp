@@ -1,4 +1,12 @@
+// 
+// HelloLibrary - main.cpp
+// 
 // Aplicación que usa la librería estática `libhello.a`
+// 
+// Autor: Alan Badillo Salas [Dragón Nómada](dragonnomada123@gmail.com)
+// Versión: Septiembre 2021 v1.0.0
+// Github: https://github.com/dragonnomada/cpp-notes/tree/main/examples/HelloLibrary
+// 
 
 // Incluímos las cabeceras
 #include "hello.h"

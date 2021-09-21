@@ -1,3 +1,13 @@
+// 
+// HelloLibrary - hello.h
+// 
+// Declara la librería `hello.h | HELLO_H`
+// 
+// Autor: Alan Badillo Salas [Dragón Nómada](dragonnomada123@gmail.com)
+// Versión: Septiembre 2021 v1.0.0
+// Github: https://github.com/dragonnomada/cpp-notes/tree/main/examples/HelloLibrary
+// 
+
 // Comprobamos que la librería no esté definida aún
 #ifndef HELLO_H
 

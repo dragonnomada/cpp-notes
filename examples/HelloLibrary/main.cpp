@@ -1,3 +1,13 @@
+// 
+// HelloLibrary - main.cpp
+// 
+// Muestra el uso de la librería local `hello.h`
+// 
+// Autor: Alan Badillo Salas [Dragón Nómada](dragonnomada123@gmail.com)
+// Versión: Septiembre 2021 v1.0.0
+// Github: https://github.com/dragonnomada/cpp-notes/tree/main/examples/HelloLibrary
+// 
+
 // Incluímos la librería que hemos creado
 #include "hello.h"
 
@@ -56,3 +66,8 @@ int main() {
 // 
 // Ejecutable:
 // main
+
+// REFERENCES
+// 
+// [1] https://www.bogotobogo.com/cplusplus/libraries.php
+// 
