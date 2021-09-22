@@ -1,10 +1,10 @@
-# Manejo de Hilos
+# Manejo de Hilos y Procesos Ramificados
 
 Autor: Alan Badillo Salas [Dragón Nómada](mailto:dragonnomada123@gmail.com)
 
 ## Hilos en C/C++ y POSIX
 
-En versiones previas a C++11 el manejo de hilos se hacía a través del sistema operativo y la librería `<pthread.h>`.
+En versiones previas a C++11 el manejo de hilos se hace a través del sistema operativo y la librería `<pthread.h>`.
 
 En el siguiente tutorial puede encontrar información al respecto si desea manejar hilos de esta forma. Sin embargo, no hay estandarización entre sistemas operativos y lo más probable es que el código sólo funcione para sistemas operativos UNIX.
 
@@ -12,11 +12,11 @@ En el siguiente tutorial puede encontrar información al respecto si desea manej
 
 ## Hilos en C++11
 
+Un hilo es un proceso que se ejecuta de forma independiente al proceso principal del programa, realizando operaciones sin interferir o bloquear el hilo principal. Por ejemplo, piense en descargar una imágen desde internet, mientras al mismo tiempo se desea leer un archivo de audio. Estas son dos tareas independientes que se podrían procesar al mismo tiempo, sin tener que esperar a que una termine para comenzar la otra. De esta forma, se puede conseguir lo que se conoce como **Multithreading** (programación concurrente o multi-hilos). 
+
 Para manejar hilos en C++11 debemos incluir la librería `<thread>` para acceder a la clase `std::thread`, la cuál creará un nuevo hilo basado en una función.
 
 La función asociada al hilo deber ser de la forma `void <name>(void)` si no recibe parámetros o de la forma `void <name>(<decay type>)` si recibe algún parámetro. Consulta la referencia al [Tipo Decay](https://www.cplusplus.com/reference/type_traits/decay/).
-
-Un hilo es un proceso que se ejecuta de forma independiente al proceso principal del programa, realizando operaciones sin interferir o bloquear el hilo principal. Por ejemplo, piense en descargar una imágen desde internet, mientras al mismo tiempo se desea leer un archivo de audio. Estas son dos tareas independientes que se podrían procesar al mismo tiempo, sin tener que esperar a que una termine para comenzar la otra. De esta forma, se puede conseguir lo que se conoce como **Multithreading** (programación concurrente o multi-hilos). 
 
 Así entonces, para lograr ejecutar tareas independientes al mismo tiempo, podemos definir funciones que reciban o no un argumento y lanzarlas en hilos de procesamiento independientes.
 
@@ -137,3 +137,96 @@ for (auto it = threads.begin(); it != threads.end(); it++) {
 ```
 
 [Revisar el ejemplo completo sobre Hilos](../examples/thread/main.cpp)
+
+## Ramificaciones en C++
+
+Una ramificación es la ejecución del mismo programa, con su propio espacio de memoria, a diferencia de los hilos, quiénes comparten la memoria del mismo programa ejecutándose. Las ramificaciones son útiles para ejecutar un mismo código múltiples veces con diferentes datos.
+
+Imagina un programa que descarga una imagen desde internet y se quiere adaptar para que descargue las imágenes mediante ramificaciones del mismo programa.
+
+Similar a los hilos, cada ramificación es lanzada y el programa se ejecutará nuevamente bajo otro identificador de programa (`pid`) en el sistema operativo. Cuándo todos lo programas fueron lanzados, el programa principal recibirá el `pid` de cada rama y entonces determinará que es el padre de todas las ramas.
+
+Usando algunas banderas condicionales podemos establecer quiénes son ramas y quién es el padre. De esa forma, nuestro código ejecutará una u otra cosa.
+
+El padre finalmente tendrá la obligación de esperar a que finalice cada rama (similar al `join` con los hilos), así haciendo un `wait(NULL)` se esperará a que finalice el siguiente *fork* (rama).
+
+> Ejemplo de un programa ramificado
+
+```c++
+#include <iostream>
+#include <sys/wait.h>
+#include <unistd.h>
+
+#define FORK_SIZE 4
+
+struct ChildData {
+    std::string label;
+};
+
+int main() {
+    std::cout << "<<<-------------- INICIO --------------" << std::endl;
+
+    ChildData children_data[FORK_SIZE] {
+        { "Data 1" },
+        { "Data 2" },
+        { "Data 3" },
+        { "Data 4" }
+    };
+
+    bool isParent = true;
+
+    int child_id = -1;
+
+    for (int i = 0; i < FORK_SIZE; i++) {
+        pid_t pid = fork();
+
+        if (pid == -1) {
+            std::cout << "ERROR: No se pudo ramificar el hijo " << i << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        if (pid == 0) {
+            child_id = i + 1;
+            std::cout << "Hijo " << child_id << " Ramificado" << std::endl;
+            isParent = false;
+            break;
+        }
+
+        usleep(100);
+
+    }
+
+    usleep(100);
+
+    if (isParent) {
+        std::cout << "--------- PROCESOS LANZADOS ----------" << std::endl;
+
+        std::cout << "[+] Proceso Padre: " << child_id << " " << getpid() << std::endl;
+
+        std::cout << "------- PROCESOS EJECUTÁNDOSE -------" << std::endl;
+
+        for (int i = 0; i < FORK_SIZE; i++) {
+            pid_t pid = wait(NULL);
+
+            if (pid >= 0) {
+    			std::cout << "[~] Proceso " << pid << " terminado" << std::endl;
+    		}
+        }
+
+        std::cout << "------- PROCESOS FINALIZADOS --------" << std::endl;
+    } else {
+        int index = child_id - 1;
+        ChildData data = children_data[index];
+        std::cout << "* [" << child_id << "] Procesando Datos: " << " " << data.label << std::endl;
+        sleep(FORK_SIZE - child_id);
+        std::cout << "* [" << child_id << "] Procesado Finalizado: " << getpid() << " " << data.label << std::endl;
+        exit(EXIT_SUCCESS);
+    }
+
+    std::cout << "[-] Proceso Padre: " << child_id << " " << getpid() << std::endl;
+
+    std::cout << ">>>--------------- FIN ----------------" << std::endl;
+}
+```
+
+[Revisar el ejemplo completo con comentarios sobre Ramificaciones](../examples/fork/main.cpp)
