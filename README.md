@@ -2,6 +2,11 @@
 
 Autor: Alan Badillo Salas [Dragón Nómada](mailto:dragonnomada123@gmail.com)
 
+## Noticias
+
+* **Miércoles 22 de Septiembre de 2021** - Se actualizaron las notas sobre [Manejo de Hilos](./notes/2_hilos.md)
+* **Martes 21 de Septiembre de 2021** - Se actualizaron las notas sobre [Compilación y Librerías](./notes/1_compilacion_librerias.md)
+
 ## Introducción
 
 Estas notas están dedicadas a entender los temas avanzados de C++. Las notas serán guiados por los ejemplos ubicados en la carpeta [examples](./examples).
