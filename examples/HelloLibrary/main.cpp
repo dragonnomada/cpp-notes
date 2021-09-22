@@ -67,7 +67,7 @@ int main() {
 // Ejecutable:
 // main
 
-// REFERENCES
+// REFERENCIAS
 // 
 // [1] https://www.bogotobogo.com/cplusplus/libraries.php
 // 
