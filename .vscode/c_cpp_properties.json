@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "\\\\wsl$\\Ubuntu-20.04\\usr\\include"
             ],
             "defines": [
                 "_DEBUG",
@@ -11,6 +12,22 @@
                 "_UNICODE"
             ],
             "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        },
+        {
+            "name": "ubuntu",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "\\\\wsl$\\Ubuntu-20.04\\usr\\include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "gnu11",
             "cppStandard": "c++17",
             "intelliSenseMode": "linux-gcc-x64"
