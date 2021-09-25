@@ -1,0 +1,15 @@
+Saludo: es
+Hola mundo
+Fin del saludo: es
+Saludo: en
+Hello world
+Fin del saludo: en
+Saludo: it
+Ciao mondo
+Fin del saludo: it
+Saludo: fr
+Salut monde
+Fin del saludo: fr
+Saludo: al
+Hallo welt
+Fin del saludo: al
