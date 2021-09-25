@@ -3,6 +3,7 @@
 #include <mariadb/conncpp.hpp>
 
 // Delete a task record (indicated by id)
+// std::unique_ptr<sql::Connection> ~ sql::Connection*
 void deleteTask(std::unique_ptr<sql::Connection> &conn, int id) {
     try {
         // Create a new PreparedStatement
