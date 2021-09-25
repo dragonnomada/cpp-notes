@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <mariadb/conncpp.hpp>
 
@@ -35,11 +36,18 @@ void showFrutas(sql::Connection *conn)
     int count = 0;
     while (res->next()) {
         std::cout << "| [" << res->getInt(1) << "] ";
-        std::cout << res->getString(2) << " " << "\t";
-        std::cout << "$ " << res->getDouble(3) << " x kilo |" << std::endl;
+        std::cout.width(20);
+        std::cout << std::left; 
+        std::cout << res->getString(2);
+        std::cout << "$ ";
+        std::cout.width(7);
+        std::cout << std::right; 
+        std::cout << std::fixed << std::setprecision(2);
+        std::cout << res->getDouble(3);
+        std::cout << " x kilo |" << std::endl;
         count++;
     }
-    std::cout << "Se encontraron " << count << " frutas en la tienda";
+    std::cout << "Se encontraron " << count << " frutas en la tienda" << std::endl;
 }
 
 void menu(sql::Connection *conn)
@@ -72,7 +80,7 @@ void menu(sql::Connection *conn)
             insertFruta(conn);
         }
 
-        std::cout << "[Pulsa una tecla para continuar...]" << std::endl;
+        std::cout << std::endl << "[Pulsa una tecla para continuar...]" << std::endl;
         std::cin.get();
         std::cin.get();
     }
